@@ -1,53 +1,55 @@
 import { createLogger, format, transports } from "winston";
 import env from "../config/env.js";
 
-const { combine, timestamp, printf, colorize, errors } = format;
+const { combine, timestamp, printf, colorize, errors, json } = format;
 
-// ── Custom log format ──────────────────────────────────────────────
-const logFormat = printf(({ level, message, timestamp, stack }) => {
-    return `${timestamp} [${level}]: ${stack || message}`;
+// Custom log format
+const logFormat = printf(({ level, message, timestamp, stack, service }) => {
+  return `${timestamp} [${service}] [${level}]: ${stack || message}`;
 });
 
+// Development format 
+const devFormat = combine(
+  colorize(),
+  timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
+  errors({ stack: true }),
+  logFormat
+);
+
+// Production format 
+const prodFormat = combine(
+  timestamp(),
+  errors({ stack: true }),
+  json()
+);
+
+// Logger instance
 export const logger = createLogger({
-    level: env.isDev ? "debug" : "info",
-    format: combine(
-        timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-        errors({ stack: true }),
-        logFormat
-    ),
-    defaultMeta: { service: "primetrade-api" },
-    transports: [
-        // Console — always
-        new transports.Console({
-            format: combine(colorize(), logFormat),
-        }),
+  level: env.isDev ? "debug" : "info",
+  format: env.isDev ? devFormat : prodFormat,
 
-        // File — errors only (production-ready)
-        new transports.File({
-            filename: "logs/error.log",
-            level: "error",
-            maxsize: 5 * 1024 * 1024, // 5 MB
-            maxFiles: 5,
-        }),
+  defaultMeta: {
+    service: "primetrade-api",
+  },
 
-        // File — combined
-        new transports.File({
-            filename: "logs/combined.log",
-            maxsize: 5 * 1024 * 1024,
-            maxFiles: 5,
-        }),
-    ],
-    exceptionHandlers: [
-        new transports.File({ filename: "logs/exceptions.log" }),
-    ],
-    rejectionHandlers: [
-        new transports.File({ filename: "logs/rejections.log" }),
-    ],
+  transports: [
+    new transports.Console(),
+  ],
+
+  exceptionHandlers: [
+    new transports.Console(),
+  ],
+
+  rejectionHandlers: [
+    new transports.Console(),
+  ],
+
+  exitOnError: false,
 });
 
-/**
- * Morgan stream adapter — pipes HTTP request logs into Winston.
- */
+// Morgan stream adapter
 export const morganStream = {
-    write: (message) => logger.http(message.trim()),
+  write: (message) => {
+    logger.http(message.trim());
+  },
 };
