@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/* ── Neobrutalism Design System ───────────────────────────────────── */
+
+@theme {
+  /* Colors */
+  --color-neo-bg: #e8e4d9;
+  --color-neo-card: #ffffff;
+  --color-neo-primary: #ff6b35;
+  --color-neo-secondary: #004e98;
+  --color-neo-accent: #ffd23f;
+  --color-neo-success: #06d6a0;
+  --color-neo-danger: #ef476f;
+  --color-neo-warning: #fca311;
+  --color-neo-info: #118ab2;
+  --color-neo-dark: #1a1a2e;
+  --color-neo-text: #16161a;
+  --color-neo-muted: #72757e;
+  --color-neo-border: #1a1a2e;
+  --color-neo-purple: #7209b7;
+  --color-neo-pink: #f72585;
+  --color-neo-green: #2dc653;
+  --color-neo-lime: #c5e83a;
+
+  /* Shadows — thick offset borders are the neobrutalism signature */
+  --shadow-neo-sm: 2px 2px 0px #1a1a2e;
+  --shadow-neo: 4px 4px 0px #1a1a2e;
+  --shadow-neo-lg: 6px 6px 0px #1a1a2e;
+  --shadow-neo-xl: 8px 8px 0px #1a1a2e;
+  --shadow-neo-hover: 2px 2px 0px #1a1a2e;
+
+  /* Font */
+  --font-neo: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-neo-mono: 'Space Mono', 'Fira Code', monospace;
+
+  /* Border */
+  --border-neo: 3px solid #1a1a2e;
+  --radius-neo: 12px;
+}
+
+/* ── Base Styles ──────────────────────────────────────────────────── */
+
+@layer base {
+  @font-face {
+    font-family: 'Space Grotesk';
+    font-display: swap;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-neo);
+    background-color: var(--color-neo-bg);
+    color: var(--color-neo-text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: var(--color-neo-accent);
+    color: var(--color-neo-dark);
+  }
+}
+
+/* ── Custom Utilities ─────────────────────────────────────────────── */
+
+@utility neo-card {
+  background-color: var(--color-neo-card);
+  border: var(--border-neo);
+  border-radius: var(--radius-neo);
+  box-shadow: var(--shadow-neo);
+}
+
+@utility neo-card-hover {
+  transition: all 0.15s ease;
+  &:hover {
+    box-shadow: var(--shadow-neo-hover);
+    transform: translate(2px, 2px);
+  }
+}
+
+@utility neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: var(--border-neo);
+  border-radius: var(--radius-neo);
+  box-shadow: var(--shadow-neo);
+  cursor: pointer;
+  transition: all 0.1s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  &:hover {
+    box-shadow: var(--shadow-neo-hover);
+    transform: translate(2px, 2px);
+  }
+  &:active {
+    box-shadow: none;
+    transform: translate(4px, 4px);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover {
+      box-shadow: var(--shadow-neo);
+      transform: none;
+    }
+  }
+}
+
+@utility neo-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: var(--border-neo);
+  border-radius: var(--radius-neo);
+  box-shadow: var(--shadow-neo-sm);
+  background: var(--color-neo-card);
+  transition: all 0.15s ease;
+  outline: none;
+  &:focus {
+    box-shadow: var(--shadow-neo);
+    border-color: var(--color-neo-primary);
+  }
+  &::placeholder {
+    color: var(--color-neo-muted);
+    font-weight: 400;
+  }
+}
+
+@utility neo-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 2px solid var(--color-neo-border);
+  border-radius: 999px;
+  box-shadow: 2px 2px 0px var(--color-neo-border);
+}
+
+@utility neo-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: var(--border-neo);
+  border-radius: var(--radius-neo);
+  box-shadow: var(--shadow-neo-sm);
+  background: var(--color-neo-card);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  &:focus {
+    box-shadow: var(--shadow-neo);
+    border-color: var(--color-neo-primary);
+  }
+}
+
+/* ── Scrollbar Styling ────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-neo-bg);
+  border-left: var(--border-neo);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-neo-dark);
+  border: 2px solid var(--color-neo-bg);
+  border-radius: 6px;
+}
+
+/* ── Animations ───────────────────────────────────────────────────── */
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@utility animate-slide-up {
+  animation: slideUp 0.3s ease forwards;
+}
+
+@utility animate-slide-in {
+  animation: slideIn 0.3s ease forwards;
+}
+
+@utility animate-pop {
+  animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@utility animate-shake {
+  animation: shake 0.4s ease;
+}
