@@ -83,6 +83,19 @@ app.get("/health", (_req, res) => {
     });
 });
 
+// ── Root / Welcome ──────────────────────────────────────────────────
+app.get("/", (_req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Welcome to the PrimeTrade API",
+        routes: {
+            health: "/health",
+            docs: "/api-docs",
+            api: "/api/v1",
+        },
+    });
+});
+
 // ── API Documentation ──────────────────────────────────────────────
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
     customCss: ".swagger-ui .topbar { display: none }",
