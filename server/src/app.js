@@ -14,6 +14,7 @@ import errorHandler from "./api/v1/middlewares/errorHandler.middleware.js";
 import ApiError from "./utils/ApiError.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
 // ── Security Middleware ────────────────────────────────────────────
 app.use(helmet());
@@ -32,6 +33,7 @@ const limiter = rateLimit({
     max: env.RATE_LIMIT_MAX_REQUESTS,
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => req.ip,
     handler: (_req, res) => {
         res.status(429).json({
             success: false,
