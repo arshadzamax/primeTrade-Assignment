@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 
 import swaggerUi from "swagger-ui-express";
 
@@ -33,7 +33,7 @@ const limiter = rateLimit({
     max: env.RATE_LIMIT_MAX_REQUESTS,
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req) => req.ip,
+    keyGenerator: ipKeyGenerator,
     handler: (_req, res) => {
         res.status(429).json({
             success: false,
